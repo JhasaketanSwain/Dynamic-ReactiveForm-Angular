@@ -1,0 +1,27 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <h2>Dynamic Form</h2>
+  <div *ngFor="let field of formFields" class="form-group">
+    <label [for]="field.name">{{ field.label }}</label>
+    <input
+      [id]="field.name"
+      [type]="field.type"
+      [formControlName]="field.name"
+      [required]="field.required"
+      [placeholder]="field.placeholder"
+    />
+  
+    <div *ngIf="formGroup.get(field.name)?.touched && formGroup.get(field.name)?.invalid">
+      <small *ngIf="formGroup.get(field.name)?.errors?.['required']">
+        {{ field.label }} is required.
+      </small>
+      <small *ngIf="formGroup.get(field.name)?.errors?.['minlength']">
+        Minimum length is {{ formGroup.get(field.name)?.errors?.['minlength'].requiredLength }}.
+      </small>
+      <small *ngIf="formGroup.get(field.name)?.errors?.['pattern']">
+        Invalid {{ field.label.toLowerCase() }} format.
+      </small>
+    </div>
+  </div>
+  <button type="submit" [disabled]="formGroup.invalid">Submit</button>
+</form>
+
